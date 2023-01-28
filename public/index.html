@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body onload="checkCookie()">
+    <header>
+        <div class="wrapper">
+            <div class="header__menu">
+                <div class="header__menu-btn header__menu-signin" data-sign-in>Sign in</div>
+                <div class="header__menu-btn header__menu-signup" data-sign-up>Sign up</div>
+                <div class="header__menu-greeting"></div>
+                <div class="header__menu-exit"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section>
+            <div class="wrapper">
+                <div class="file__list">
+                </div>
+                <div class="editor">
+                    <div class="editor-options">
+                        <div class="editor__options-title">
+                            <input type="text" placeholder="Title your document" id="file_name">
+                        </div>
+                        <div class="editor__options-save" id="file_save">
+                            <i class="fa-solid fa-floppy-disk"></i> Save
+                        </div>
+                    </div>
+                    <div class="editor-textarea">
+                        <textarea id="editor_textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div id="sign-up-modal" class="modal-window hide">
+            <div class="modal-window__container">
+                <div class="modal-window__content">
+                    <h2 class="modal-window__title">Sign up</h2>
+                    <div class="modal-window__close" id="sign_up_close">&times;</div>
+                    <form action="">
+                        <input type="text" class="modal-window__input" id="sign-up-username">
+                        <input type="password" class="modal-window__input" id="sign-up-password">
+                        <h2 class="failure_sign_up hide">Check the entered information</h2>
+                        <button type="button" class="modal-window-btn" id="sign-up-btn">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="sign-in-modal" class="modal-window hide">
+            <div class="modal-window__container">
+                <div class="modal-window__content">
+                    <h2 class="modal-window__title">Sign in</h2>
+                    <div class="modal-window__close" id="sign_in_close">&times;</div>
+                    <form action="">
+                        <input type="text" class="modal-window__input" id="sign-in-username">
+                        <input type="password" class="modal-window__input" id="sign-in-password">
+                        <h2 class="failure_sign_in hide">There is no account with such username or password was entered
+                            incorrectly</h2>
+                        <button type="button" class="modal-window-btn" id="sign-in-btn">Sign in</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+    <script>
+
+        let socket = io();
+
+        // ONLOAD STARTS
+
+        // ONLOAD ENDS
+
+        // SIGN UP MODAL STARTS
+
+        const modalSignUp = document.querySelector("#sign-up-modal");
+        modalCloseSignUp = document.getElementById("sign_up_close");
+        modalTriggerSignUp = document.querySelector("[data-sign-up]");
+
+        modalTriggerSignUp.addEventListener("click", openSignUpModal);
+
+        function openSignUpModal() {
+            modalSignUp.classList.toggle("hide");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeSignUpModal() {
+            modalSignUp.classList.toggle("hide");
+            document.body.style.overflow = "";
+            document.querySelector(".failure_sign_up").classList.add("hide");
+        }
+
+        modalCloseSignUp.addEventListener("click", closeSignUpModal);
+
+        document.body.addEventListener("keydown", function (event) {
+            if (event.code === "Escape" && !modalSignUp.classList.contains("hide")) closeSignUpModal();
+        })
+
+        modalSignUp.addEventListener("click", function (event) {
+            if (event.target === modalSignUp) closeSignUpModal();
+        })
+
+
+        // SIGN UP MODAL ENDS
+
+        // SIGN IN MODAL STARTS
+
+        const modalSignIn = document.querySelector("#sign-in-modal");
+        modalCloseSignIn = document.getElementById("sign_in_close");
+        modalTriggerSignIn = document.querySelector("[data-sign-in]");
+
+        modalTriggerSignIn.addEventListener("click", openSignInModal);
+
+        function openSignInModal() {
+            modalSignIn.classList.toggle("hide");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeSignInModal() {
+            modalSignIn.classList.toggle("hide");
+            document.querySelector(".failure_sign_in").classList.add("hide");
+            document.body.style.overflow = "";
+        }
+
+        modalCloseSignIn.addEventListener("click", closeSignInModal);
+
+        document.body.addEventListener("keydown", function (event) {
+            if (event.code === "Escape" && !modalSignIn.classList.contains("hide")) closeSignInModal();
+        })
+
+        modalSignIn.addEventListener("click", function (event) {
+            if (event.target === modalSignIn) closeSignInModal();
+        })
+
+        // SIGN IN MODAL ENDS
+
+        // ASSIGNMENT OF VARIABLES STARTS
+
+        let headerMenuBtn = document.querySelectorAll(".header__menu-btn");
+        let headerMenuGreeting = document.querySelector(".header__menu-greeting");
+        let headerMenuExit = document.querySelector(".header__menu-exit");
+
+        headerMenuGreeting.classList.add("hide");
+        headerMenuExit.classList.add("hide");
+
+        let signUpBtn = document.querySelector("#sign-up-btn");
+        let signUpLogin = document.querySelector("#sign-up-username");
+        let signUpPassword = document.querySelector("#sign-up-password");
+
+        let signInBtn = document.querySelector("#sign-in-btn");
+        let signInLogin = document.querySelector("#sign-in-username");
+        let signInPassword = document.querySelector("#sign-in-password");
+
+        let file_list = document.querySelector(".file__list");
+
+        let fileName = document.querySelector("#file_name");
+        let fileSave = document.querySelector("#file_save");
+        let editorTextarea = document.querySelector("#editor_textarea");
+
+        if (!checkCookie) {
+            fileName.disabled = true;
+            fileName.classList.add("inactive");
+            fileSave.classList.add("inactive");
+            editorTextarea.disabled = true;
+            editorTextarea.classList.add("inactive");
+            file_list.innerHTML = "";
+        } else {
+            fileName.disabled = false;
+            fileName.classList.remove("inactive");
+            fileSave.classList.remove("inactive");
+            editorTextarea.disabled = false;
+            editorTextarea.classList.remove("inactive");
+        }
+
+        // ASSIGNMENT OF VARIABLES ENDS
+
+        // SIGN UP PROCESS STARTS
+
+        signUpBtn.addEventListener("click", function () {
+            if (signUpLogin.value == "" || signUpPassword.value == "") {
+                document.querySelector(".failure_sign_up").classList.remove("hide");
+            } else {
+                socket.emit("signup", { username: signUpLogin.value, password: signUpPassword.value });
+                document.querySelector(".failure_sign_up").classList.add("hide");
+                closeSignUpModal();
+
+            }
+        })
+
+        // SIGN UP PROCESS ENDS
+
+        //SIGN IN PROCESS STARTS
+
+        signInBtn.addEventListener("click", function () {
+            if (signInLogin.value == "" || signInPassword.value == "") {
+                document.querySelector(".failure_sign_in").classList.remove("hide");
+            } else {
+                socket.emit("signin", { username: signInLogin.value, password: signInPassword.value });
+                document.querySelector(".failure_sign_in").classList.add("hide");
+                closeSignInModal();
+            }
+
+            socket.on("granted", function (permitted) {
+                if (permitted) {
+                    headerMenuGreeting.classList.remove("hide");
+                    headerMenuExit.classList.remove("hide");
+
+                    headerMenuBtn.forEach(element => {
+                        element.classList.add("hide");
+                    })
+
+                    createCookie(signInLogin.value, 3600);
+                    headerMenuGreeting.innerHTML = `Welcome, ${signInLogin.value}`;
+
+                    fileName.disabled = false;
+                    fileName.classList.remove("inactive");
+                    fileSave.classList.remove("inactive");
+                    editorTextarea.disabled = false;
+                    editorTextarea.classList.remove("inactive");
+                    socket.on("listoffiles", function (list) {
+                        let result = JSON.parse(list);
+
+                        for (i = 0; i < result.content.length; i++) {
+                            let item_name = document.createElement("p");
+                            item_name.innerHTML = `${result.content[i].filename}`;
+                            item_name.classList.add("item_name");
+
+                            let item_title = document.createElement("div");
+                            item_title.classList.add("file__list__item-title");
+
+                            item_title.append(item_name);
+
+                            let item_action_edit = document.createElement("div");
+                            item_action_edit.dataset.val = i;
+                            item_action_edit.innerHTML = `<i class="fa-solid fa-pencil"></i>`;
+                            item_action_edit.classList.add("file__list__item__actions-edit");
+
+                            let item_action_remove = document.createElement("div");
+                            item_action_remove.dataset.val = i;
+                            item_action_remove.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+                            item_action_remove.classList.add("file__list__item__actions-remove");
+
+                            let item_actions = document.createElement("div");
+                            item_actions.classList.add("file__list__item-actions");
+
+                            let list_item = document.createElement("div");
+                            list_item.classList.add("file__list-item");
+
+                            file_list.classList.add("file__list");
+
+                            item_actions.append(item_action_edit, item_action_remove);
+                            list_item.append(item_title, item_actions);
+                            file_list.append(list_item);
+                        }
+                    })
+                } else if (!permitted || permitted == null || permitted == undefined) {
+                    headerMenuGreeting.classList.add("hide");
+                    headerMenuExit.classList.add("hide");
+
+                    headerMenuBtn.forEach(element => {
+                        element.classList.remove("hide");
+                    })
+
+                    fileName.classList.add("inactive");
+                    editorTextarea.classList.add("inactive");
+                    alert("Wrong credentials");
+                }
+            })
+        })
+
+        // SIGN IN PROCESS ENDS
+
+        // ACCOUNT EXITING PROCESS STARTS
+
+        headerMenuExit.addEventListener("click", function () {
+            document.cookie = "username=";
+
+            headerMenuGreeting.classList.add("hide");
+            headerMenuExit.classList.add("hide");
+
+            headerMenuBtn.forEach(item => {
+                item.classList.remove("hide");
+            })
+
+            fileName.disabled = true;
+            fileName.classList.add("inactive");
+            fileSave.classList.add("inactive");
+            editorTextarea.disabled = true;
+            editorTextarea.classList.add("inactive");
+            file_list.innerHTML = "";
+            location.reload();
+        })
+
+        // ACCOUNT EXITING PROCESS ENDS
+
+        // COOKIE STUFF STARTS
+
+        function createCookie(cookieValue, expiration) {
+            document.cookie = `username=${cookieValue};max-age=${expiration}`;
+        }
+
+        function accessCookie(cookieName) {
+            let cookie = cookieName + "=";
+            let cookieArray = document.cookie.split(";");
+
+            for (let i = 0; i < cookieArray.length; i++) {
+                let temp = cookieArray[i].trim();
+                if (temp.indexOf(cookie) == 0) {
+                    return temp.substring(cookie.length, temp.length);
+                }
+            }
+        }
+
+        function checkCookie() {
+            let user = accessCookie("username");
+            if (user != "") {
+                headerMenuGreeting.classList.remove("hide");
+                headerMenuExit.classList.remove("hide");
+                headerMenuBtn.forEach(item => {
+                    item.classList.add("hide");
+                })
+                headerMenuGreeting.innerHTML = `Welcome, ${user}`;
+
+                socket.emit("replenishlist", user);
+                socket.on("replenishedlist", (data) => {
+                    let newList = JSON.parse(data);
+                    file_list.innerHTML = "";
+
+                    for (i = 0; i < newList.content.length; i++) {
+                        let item_name = document.createElement("p");
+                        item_name.innerHTML = `${newList.content[i].filename}`;
+                        item_name.classList.add("item_name");
+
+                        let item_title = document.createElement("div");
+                        item_title.classList.add("file__list__item-title");
+
+                        item_title.append(item_name);
+
+                        let item_action_edit = document.createElement("div");
+                        item_action_edit.dataset.val = i;
+                        item_action_edit.innerHTML = `<i class="fa-solid fa-pencil"></i>`;
+                        item_action_edit.classList.add("file__list__item__actions-edit");
+
+                        let item_action_remove = document.createElement("div");
+                        item_action_remove.dataset.val = i;
+                        item_action_remove.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+                        item_action_remove.classList.add("file__list__item__actions-remove");
+
+                        let item_actions = document.createElement("div");
+                        item_actions.classList.add("file__list__item-actions");
+
+                        let list_item = document.createElement("div");
+                        list_item.classList.add("file__list-item");
+
+                        file_list.classList.add("file__list");
+
+                        item_actions.append(item_action_edit, item_action_remove);
+                        list_item.append(item_title, item_actions);
+                        file_list.append(list_item);
+                    }
+
+                })
+            } else {
+                headerMenuGreeting.classList.add("hide");
+                headerMenuExit.classList.add("hide");
+
+                headerMenuBtn.forEach(item => {
+                    item.classList.remove("hide");
+                })
+
+                fileName.disabled = true;
+                fileName.classList.add("inactive");
+                fileSave.classList.add("inactive");
+                editorTextarea.disabled = true;
+                editorTextarea.classList.add("inactive");
+                file_list.innerHTML = "";
+            }
+        }
+
+        // COOKIE STUFF ENDS
+
+        // EDITING & DELETING PROCESS STARTS
+
+        file_list.addEventListener("click", function (event) {
+            let target = event.target;
+
+            if (target.tagName == "I" && target.parentNode.classList.contains("file__list__item__actions-edit")) {
+                socket.emit("edit", target.parentNode.dataset.val);
+                socket.on("editData", function (object) {
+                    fileName.value = object.title;
+                    fileName.disabled = true;
+                    editorTextarea.value = object.output;
+                })
+
+                fileSave.addEventListener("click", function () {
+                    socket.emit("alteredData", { numberOfFile: target.parentNode.dataset.val, nameOfFile: fileName.value, contentOfFile: editorTextarea.value });
+                })
+            }
+
+            if (target.tagName == "I" && target.parentNode.classList.contains("file__list__item__actions-remove")) {
+                socket.emit("delete", { numberOfFile: target.parentNode.dataset.val, nameOfFile: target.parentNode.parentNode.parentNode.children[0].children[0].innerHTML });
+                socket.on("deletionSuccess", (success) => {
+                    if (success) location.reload();
+                })
+            }
+        })
+
+        // EDITING & DELETING PROCESS ENDS
+
+        // CREATING & SAVING NEW FILE STARTS
+
+        fileSave.addEventListener("click", function () {
+            socket.emit("savefile", { title: fileName.value, contents: editorTextarea.value });
+            socket.on("creationSuccess", (success) => {
+                if (success) location.reload();
+            })
+        })
+
+        // CREATING & SAVING NEW FILE ENDS
+
+    </script>
+</body>
+
+</html>

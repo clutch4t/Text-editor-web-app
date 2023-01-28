@@ -1,0 +1,412 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&family=Lexend:wght@300&display=swap');
+
+body {
+    /* background-color: rgb(161, 161, 255); */
+    background-image: url("background.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-image: linear-gradient(to right, rgba(39, 39, 253, .5), rgba(150, 150, 255, 1)); */
+    font-family: 'Irish Grover', cursive;
+}
+
+.wrapper {
+    max-width: 1066px;
+    margin: 0 auto;
+}
+
+/* HEADER STARTS */
+
+.header__menu {
+    display: flex;
+    flex-wrap: wrap;
+    /* background-color: white; */
+    background-color: #4e5357;
+    margin: 20px auto;
+    height: 70px;
+    border-radius: 50px;
+    justify-content: right;
+}
+
+.header__menu-btn {
+    margin: 15px;
+    padding: 10px 20px;
+    /* background-color: white; */
+    background-color: #64707a;
+    border-radius: 50px;
+    color: black;
+    font-weight: bold;
+    box-shadow: 2px 1px 11px 1px rgba(0, 0, 0, 0.97);
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.header__menu-btn:hover {
+    transform: scale(0.95);
+    box-shadow: 1px 0.5px 6px 1px rgba(0, 0, 0, 0.97);
+    background-color: rgb(150, 150, 255);
+}
+
+.header__menu-btn.hide {
+    display: none;
+}
+
+.header__menu-greeting.hide {
+    display: none;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.header__menu-greeting {
+    display: block;
+    margin: 10px;
+    padding: 10px 20px;
+    /* background-color: white; */
+    background-color: #64707a;
+    border-radius: 50px;
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 2px 1px 11px 1px rgba(0, 0, 0, 0.97);
+    cursor: pointer;
+}
+
+.header__menu-exit {
+    display: block;
+    margin: 10px;
+    padding: 10px 20px;
+    /* background-color: white; */
+    background-color: #64707a;
+    border-radius: 50px;
+    color: red;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 2px 1px 11px 1px rgba(0, 0, 0, 0.97);
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.header__menu-exit:hover {
+    transform: scale(0.95);
+    box-shadow: 1px 0.5px 6px 1px rgba(0, 0, 0, 0.97);
+    background-color: red;
+    color: white;
+}
+
+.header__menu-exit.hide {
+    display: none;
+}
+
+/* HEADER ENDS */
+
+/* MAIN STARTS */
+
+main {
+    margin: 0 auto;
+}
+
+/* FILE LIST STARTS */
+
+.file__list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    min-height: 300px;
+    max-height: 350px;
+    margin: 0 auto;
+    /* background-color: white; */
+    background-color: #4e5357;
+    border-radius: 10px;
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    border: none;
+    outline: none;
+    border-radius: 10px;
+}
+
+.file__list-item {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: gray;
+    width: 95%;
+    height: 55px;
+    margin: 10px auto;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-shadow: 1px 2px 4px;
+}
+
+.file__list__item-title {
+    width: 83%;
+    margin: 10px 20px;
+}
+
+.file__list__item-title>p {
+    color: black;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.file__list__item-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-self: right;
+}
+
+.file__list__item-actions>div {
+    width: 50%;
+    height: 45px;
+    padding: 10px;
+}
+
+.file__list__item-actions>div>i {
+    color: #4e5357;
+    cursor: pointer;
+    font-size: 28px;
+}
+
+/* FILE LIST ENDS */
+
+/* EDITOR STARTS */
+
+.editor {
+    /* background-color: white; */
+    background-color: #4e5357;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 550px;
+    margin: 50px auto;
+    border-radius: 10px;
+}
+
+/* EDITOR OPTIONS START */
+
+.editor-options {
+    display: flex;
+    flex-wrap: wrap;
+    width: 95%;
+    height: 40px;
+    margin: 20px auto;
+
+}
+
+.editor__options-title {
+    width: 80%;
+    height: 40px;
+    margin: 0 auto;
+}
+
+.editor__options-title>input {
+    width: 90%;
+    height: 35px;
+    background-color: #64707a;
+    outline: none;
+    border: none;
+    border: 1px solid black;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-family: 'Irish Grover', cursive;
+    font-weight: bold;
+}
+
+.editor__options-title>input.inactive {
+    background-color: #808080;
+}
+
+.editor__options-title>input::placeholder {
+    color: black;
+    font-size: 18px;
+    font-family: 'Irish Grover', cursive;
+    font-weight: bold;
+}
+
+.editor__options-title>input:focus {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Irish Grover', cursive;
+    font-weight: bold;
+}
+
+.editor__options-save {
+    width: 20%;
+    padding: 5px;
+    margin: 0 auto;
+    background-color: rgb(161, 161, 255);
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.editor__options-save:hover {
+    transform: scale(0.95);
+}
+
+.editor__options-save.inactive {
+    background-color: gray;
+    cursor: default;
+}
+
+.editor__options-save.inactive:hover {
+    background-color: gray;
+    transform: scale(1);
+    cursor: default;
+}
+
+
+/* EDITOR OPTIONS END */
+
+.editor-textarea {
+    width: 95%;
+    height: 80%;
+    margin: 0 auto;
+}
+
+textarea {
+    background-color: #64707a;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    resize: none;
+    font-size: 14px;
+    font-family: 'Irish Grover', cursive;
+    font-weight: bold;
+}
+
+textarea.inactive {
+    background-color: #808080;
+}
+
+textarea:focus {
+    padding: 10px;
+    font-size: 14px;
+    font-family: 'Irish Grover', cursive;
+    font-weight: bold;
+}
+
+/* EDITOR ENDS */
+
+/* MAIN ENDS */
+
+/* MODAL WINDOW  STARTS*/
+
+.modal-window {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, .4);
+}
+
+.modal-window.hide {
+    display: none;
+}
+
+.modal-window__container {
+    max-width: 500px;
+    margin: 150px auto;
+}
+
+.modal-window__content {
+    background-color: #4e5357;
+    padding: 25px;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
+    max-height: 70vh;
+    position: relative;
+    color: white;
+}
+
+.modal-window__title {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+}
+
+.modal-window__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: rgb(150, 150, 255);
+    cursor: pointer;
+    font-size: 2rem;
+    border-radius: 50%;
+    transition: .3s all ease;
+}
+
+.modal-window__close:hover {
+    color: white;
+    background-color: rgb(150, 150, 255);
+}
+
+.modal-window__input {
+    display: block;
+    width: 100%;
+    margin: 20px 0;
+    padding: 1rem;
+    border: 1px solid rgba(0, 0, 0, .3);
+    border-radius: .3rem;
+    font-size: 1.2rem;
+    text-align: center;
+    outline: none;
+}
+
+.modal-window-btn {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+    background-color: rgb(150, 150, 255);
+    padding: 1rem;
+    border-radius: .3rem;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
+    cursor: pointer;
+}
+
+.failure_sign_up {
+    margin: 10px auto;
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.failure_sign_up.hide {
+    display: none;
+}
+
+.failure_sign_in {
+    margin: 10px auto;
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.failure_sign_in.hide {
+    display: none;
+}
+
+/* MODAL WINDOW ENDS */
